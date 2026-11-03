@@ -44,22 +44,30 @@ flowchart TD
 
 ## Struktur File & Folder
 ```text
-├── index.html          # Halaman utama tampilan chat
-├── config.example.js   # Contoh konfigurasi API
-├── config.js           # Konfigurasi aktif (diabaikan git)
-├── README.md           # Dokumentasi & panduan proyek
+├── index.html            # Halaman utama tampilan chat
+├── about.html            # Halaman About Us
+├── faq.html              # Halaman FAQ
+├── api.php               # Backend proxy pengirim pesan ke AI
+├── config.example.php    # Contoh format konfigurasi server
+├── config.php            # Konfigurasi aktif kredensial AI (diabaikan git)
+├── README.md             # Dokumentasi & panduan proyek
 └── src/
     ├── css/
-    │   └── style.css   # Styling antarmuka chat
+    │   └── style.css     # Styling antarmuka chat & halaman konten
     └── js/
-        ├── harness.js  # Guardrails, normalisasi teks & proteksi keamanan
-        └── app.js      # Logika interaksi chat & komunikasi AI
+        ├── harness.js    # Guardrails, normalisasi teks & proteksi keamanan
+        └── app.js        # Logika interaksi chat & komunikasi ke api.php
 ```
 
 ---
 
 ## Cara Menjalankan
-1. Salin `config.example.js` menjadi `config.js`:
+1. Pastikan server web dengan dukungan **PHP** aktif (misal: Apache / XAMPP / bawaan PHP CLI).
+2. Salin `config.example.php` menjadi `config.php`:
    - Masukkan **API Key AI Anda**.
    - Sesuaikan **AI Endpoint** dan **Model** sesuai penyedia layanan yang digunakan.
-2. Buka `index.html` langsung di browser web Anda.
+3. Jalankan server lokal:
+   ```bash
+   php -S localhost:8000
+   ```
+4. Buka `http://localhost:8000` di browser web Anda.
