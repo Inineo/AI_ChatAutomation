@@ -2,12 +2,19 @@
 
 Prototipe web chat AI sederhana dan minimalis menggunakan Groq Cloud API.
 
-## Struktur File
-- `index.html` — Struktur halaman tampilan chat.
-- `style.css` — Styling layout chat box.
-- `app.js` — Logika pengiriman dan penerimaan pesan AI.
-- `config.example.js` — Contoh format konfigurasi API.
-- `config.js` — File konfigurasi lokal aktif (diabaikan oleh git demi keamanan).
+## Struktur File & Folder
+```text
+├── index.html          # Halaman utama tampilan chat
+├── config.example.js   # Contoh konfigurasi API
+├── config.js           # Konfigurasi aktif (diabaikan git)
+├── README.md           # Dokumentasi proyek
+└── src/
+    ├── css/
+    │   └── style.css   # Styling antarmuka chat
+    └── js/
+        ├── harness.js  # Guardrails, normalisasi teks & proteksi keamanan
+        └── app.js      # Logika interaksi chat & komunikasi AI
+```
 
 ## Cara Menjalankan
 1. Salin `config.example.js` menjadi `config.js`:
