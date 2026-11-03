@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ Knowledge Base</title>
+  <link rel="stylesheet" href="src/css/style.css">
+  <style>
+    .faq-container {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 24px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
+    .faq-item {
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .faq-item h3 {
+      font-size: 1rem;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+    .faq-item p {
+      font-size: 0.9rem;
+      color: #475569;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 16px;
+      color: #2563eb;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="faq-container">
+    <h2>Daftar Pertanyaan Umum (FAQ)</h2>
+    <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 20px;">
+      Basis pengetahuan yang dibaca dan dicari oleh AI saat menjawab pertanyaan pengguna.
+    </p>
+
+    <div id="faq-list"></div>
+
+    <a href="index.html" class="back-link">&larr; Kembali ke Chat AI</a>
+  </div>
+
+  <script src="src/js/faq.js"></script>
+  <script>
+    const listEl = document.getElementById('faq-list');
+    FAQ_DATA.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'faq-item';
+      div.innerHTML = `
+        <span class="badge">${item.kategori}</span>
+        <h3>${item.tanya}</h3>
+        <p>${item.jawab}</p>
+      `;
+      listEl.appendChild(div);
+    });
+  </script>
+</body>
+</html>

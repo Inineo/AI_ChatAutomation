@@ -11,8 +11,14 @@ function appendMessage(text, sender) {
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
-// Fungsi 2: Ambil balasan dari AI
+// Fungsi 2: Ambil balasan dari AI (dengan pencarian konteks FAQ)
 async function fetchAIReply(userText) {
+  // 1. Searching FAQ lokal jika ada informasi relevan
+  const relevantFaq = typeof searchFAQ === 'function' ? searchFAQ(userText) : null;
+  const systemPrompt = relevantFaq 
+    ? `${HARNESS_SYSTEM_INSTRUCTION}\n\nINFORMASI FAQ REFERENSI:\n${relevantFaq}\n(Gunakan informasi di atas untuk menjawab jika sesuai).`
+    : HARNESS_SYSTEM_INSTRUCTION;
+
   const res = await fetch(CONFIG.AI_ENDPOINT, {
     method: 'POST',
     headers: {
@@ -21,7 +27,7 @@ async function fetchAIReply(userText) {
     },
     body: JSON.stringify({
       model: CONFIG.MODEL,
-      instructions: HARNESS_SYSTEM_INSTRUCTION, // Dari harness.js
+      instructions: systemPrompt,
       input: userText
     })
   });
