@@ -11,13 +11,45 @@ function appendMessage(text, sender) {
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
-// Fungsi 2: Ambil balasan dari AI (dengan pencarian konteks FAQ)
+// Fungsi pembaca dokumen HTML untuk referensi AI
+async function fetchPageText(url) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return '';
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent.replace(/\s+/g, ' ').trim();
+  } catch (e) {
+    return '';
+  }
+}
+
+// Fungsi pencari informasi dari faq.html dan about.html
+async function getRelevantContext(query) {
+  const q = query.toLowerCase();
+  let context = '';
+
+  // 1. Cek kebutuhan halaman About Us
+  if (q.includes('tentang') || q.includes('about') || q.includes('perusahaan') || q.includes('kantor') || q.includes('alamat') || q.includes('kontak') || q.includes('visi')) {
+    const aboutText = await fetchPageText('about.html');
+    if (aboutText) context += `\n[DATA ABOUT US]:\n${aboutText}\n`;
+  }
+
+  // 2. Cek kebutuhan halaman FAQ
+  const faqText = await fetchPageText('faq.html');
+  if (faqText) context += `\n[DATA FAQ]:\n${faqText}\n`;
+
+  return context.trim();
+}
+
+// Fungsi 2: Ambil balasan dari AI
 async function fetchAIReply(userText) {
-  // 1. Searching FAQ lokal jika ada informasi relevan
-  const relevantFaq = typeof searchFAQ === 'function' ? searchFAQ(userText) : null;
-  const systemPrompt = relevantFaq 
-    ? `${HARNESS_SYSTEM_INSTRUCTION}\n\nINFORMASI FAQ REFERENSI:\n${relevantFaq}\n(Gunakan informasi di atas untuk menjawab jika sesuai).`
-    : HARNESS_SYSTEM_INSTRUCTION;
+  const context = await getRelevantContext(userText);
+
+  let systemPrompt = HARNESS_SYSTEM_INSTRUCTION;
+  if (context) {
+    systemPrompt += `\n\nREFERENSI WEBSITE RESMI (Gunakan hanya data ini untuk menjawab jika relevan):\n${context}\n\nATURAN: Dilarang mengarang informasi yang tidak tertulis pada referensi di atas.`;
+  }
 
   const res = await fetch(CONFIG.AI_ENDPOINT, {
     method: 'POST',
@@ -53,7 +85,7 @@ chatForm.addEventListener('submit', async (e) => {
   appendMessage(text, 'user');
   userInput.value = '';
 
-  // 1. INPUT GUARD (harness.js): Deteksi spasi, reverse, base64, SQL, dsb.
+  // 1. INPUT GUARD (harness.js)
   const check = validateInput(text);
   if (!check.allowed) {
     appendMessage(`[Ditolak]: ${check.reason}`, 'bot');
@@ -66,7 +98,7 @@ chatForm.addEventListener('submit', async (e) => {
   try {
     const rawReply = await fetchAIReply(text);
 
-    // 2. OUTPUT GUARD (harness.js): Periksa balasan bot sebelum dicetak
+    // 2. OUTPUT GUARD (harness.js)
     const outputCheck = validateOutput(rawReply);
     botBubble.textContent = outputCheck.sanitizedText;
   } catch (err) {

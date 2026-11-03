@@ -3,74 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FAQ Knowledge Base</title>
+  <title>Frequently Asked Questions (FAQ)</title>
   <link rel="stylesheet" href="src/css/style.css">
-  <style>
-    .faq-container {
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 24px;
-      background: #ffffff;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-    }
-    .faq-item {
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #e2e8f0;
-    }
-    .faq-item h3 {
-      font-size: 1rem;
-      color: #0f172a;
-      margin-bottom: 4px;
-    }
-    .faq-item p {
-      font-size: 0.9rem;
-      color: #475569;
-    }
-    .badge {
-      display: inline-block;
-      font-size: 0.75rem;
-      background: #e0f2fe;
-      color: #0369a1;
-      padding: 2px 8px;
-      border-radius: 4px;
-      margin-bottom: 6px;
-    }
-    .back-link {
-      display: inline-block;
-      margin-top: 16px;
-      color: #2563eb;
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-  </style>
 </head>
 <body>
-  <div class="faq-container">
-    <h2>Daftar Pertanyaan Umum (FAQ)</h2>
-    <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 20px;">
-      Basis pengetahuan yang dibaca dan dicari oleh AI saat menjawab pertanyaan pengguna.
-    </p>
+  <div class="content-card">
+    <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
+    <p class="subtitle">Informasi resmi seputar pemesanan, pembayaran, dan kebijakan operasional.</p>
 
-    <div id="faq-list"></div>
+    <div class="faq-item">
+      <span class="badge">Pemesanan</span>
+      <h3>Bagaimana cara memesan layanan?</h3>
+      <p>Anda dapat memesan melalui formulir pemesanan di menu Order dan menyelesaikan pembayaran via transfer bank atau e-wallet.</p>
+    </div>
+
+    <div class="faq-item">
+      <span class="badge">Pembayaran</span>
+      <h3>Apa saja metode pembayaran yang didukung?</h3>
+      <p>Kami menerima pembayaran melalui transfer Bank BCA, Mandiri, BNI, serta e-wallet QRIS, GoPay, dan OVO.</p>
+    </div>
+
+    <div class="faq-item">
+      <span class="badge">Pengembalian Dana</span>
+      <h3>Apakah saya bisa mengajukan refund?</h3>
+      <p>Bisa. Pengajuan refund dapat dilakukan maksimal 24 jam setelah pembayaran jika layanan belum mulai diproses oleh tim kami.</p>
+    </div>
+
+    <div class="faq-item">
+      <span class="badge">Jam Operasional</span>
+      <h3>Kapan jam kerja customer service?</h3>
+      <p>Customer service kami aktif setiap hari Senin sampai Jumat, pukul 08:00 hingga 17:00 WIB.</p>
+    </div>
 
     <a href="index.html" class="back-link">&larr; Kembali ke Chat AI</a>
   </div>
-
-  <script src="src/js/faq.js"></script>
-  <script>
-    const listEl = document.getElementById('faq-list');
-    FAQ_DATA.forEach(item => {
-      const div = document.createElement('div');
-      div.className = 'faq-item';
-      div.innerHTML = `
-        <span class="badge">${item.kategori}</span>
-        <h3>${item.tanya}</h3>
-        <p>${item.jawab}</p>
-      `;
-      listEl.appendChild(div);
-    });
-  </script>
 </body>
 </html>
