@@ -42,7 +42,7 @@ async function getRelevantContext(query) {
   return context.trim();
 }
 
-// Fungsi 2: Ambil balasan dari AI
+// Fungsi 2: Ambil balasan dari AI lewat backend PHP (api.php)
 async function fetchAIReply(userText) {
   const context = await getRelevantContext(userText);
 
@@ -51,14 +51,13 @@ async function fetchAIReply(userText) {
     systemPrompt += `\n\nREFERENSI WEBSITE RESMI (Gunakan hanya data ini untuk menjawab jika relevan):\n${context}\n\nATURAN: Dilarang mengarang informasi yang tidak tertulis pada referensi di atas.`;
   }
 
-  const res = await fetch(CONFIG.AI_ENDPOINT, {
+  // Request ke api.php (API Key aman di server, tidak terbuka ke browser)
+  const res = await fetch('api.php', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${CONFIG.AI_API_KEY}`
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      model: CONFIG.MODEL,
       instructions: systemPrompt,
       input: userText
     })

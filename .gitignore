@@ -1,2 +1,3 @@
-# Config File
+# Konfigurasi Lokal Rahasia (Jangan sampai ter-commit ke Git)
+config.php
 config.js
