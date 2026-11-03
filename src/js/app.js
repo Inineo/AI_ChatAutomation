@@ -51,8 +51,8 @@ async function fetchAIReply(userText) {
     systemPrompt += `\n\nREFERENSI WEBSITE RESMI (Gunakan hanya data ini untuk menjawab jika relevan):\n${context}\n\nATURAN: Dilarang mengarang informasi yang tidak tertulis pada referensi di atas.`;
   }
 
-  // Request ke api.php (API Key aman di server, tidak terbuka ke browser)
-  const res = await fetch('api.php', {
+  // Request ke backend Node.js (/api/chat)
+  const res = await fetch('/api/chat', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

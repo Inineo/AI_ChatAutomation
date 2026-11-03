@@ -47,27 +47,27 @@ flowchart TD
 ├── index.html            # Halaman utama tampilan chat
 ├── about.html            # Halaman About Us
 ├── faq.html              # Halaman FAQ
-├── api.php               # Backend proxy pengirim pesan ke AI
-├── config.example.php    # Contoh format konfigurasi server
-├── config.php            # Konfigurasi aktif kredensial AI (diabaikan git)
+├── server.js             # Server backend mandiri & API proxy (Node.js murni)
+├── .env.example          # Contoh format variabel environment
+├── .env                  # Kredensial AI aktif (diabaikan git)
 ├── README.md             # Dokumentasi & panduan proyek
 └── src/
     ├── css/
     │   └── style.css     # Styling antarmuka chat & halaman konten
     └── js/
         ├── harness.js    # Guardrails, normalisasi teks & proteksi keamanan
-        └── app.js        # Logika interaksi chat & komunikasi ke api.php
+        └── app.js        # Logika interaksi chat & komunikasi ke /api/chat
 ```
 
 ---
 
 ## Cara Menjalankan
-1. Pastikan server web dengan dukungan **PHP** aktif (misal: Apache / XAMPP / bawaan PHP CLI).
-2. Salin `config.example.php` menjadi `config.php`:
-   - Masukkan **API Key AI Anda**.
-   - Sesuaikan **AI Endpoint** dan **Model** sesuai penyedia layanan yang digunakan.
-3. Jalankan server lokal:
+1. Salin `.env.example` menjadi `.env` lalu masukkan API Key Anda.
+2. Jalankan server (tanpa perlu install library tambahan):
    ```bash
-   php -S localhost:8000
+   node server.js
    ```
-4. Buka `http://localhost:8000` di browser web Anda.
+3. Buka browser di:
+   ```text
+   http://localhost:3000
+   ```

@@ -1,3 +1,5 @@
-# Konfigurasi Lokal Rahasia (Jangan sampai ter-commit ke Git)
+# Konfigurasi Lokal Rahasia
+.env
 config.php
 config.js
+node_modules
