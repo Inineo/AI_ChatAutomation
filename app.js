@@ -47,7 +47,7 @@ chatForm.addEventListener('submit', async (e) => {
   appendMessage(text, 'user');
   userInput.value = '';
 
-  // Validasi lewat harness
+  // 1. INPUT GUARD (harness.js): Deteksi spasi, reverse, base64, SQL, dsb.
   const check = validateInput(text);
   if (!check.allowed) {
     appendMessage(`[Ditolak]: ${check.reason}`, 'bot');
@@ -58,7 +58,11 @@ chatForm.addEventListener('submit', async (e) => {
   const botBubble = messagesEl.lastElementChild;
 
   try {
-    botBubble.textContent = await fetchAIReply(text);
+    const rawReply = await fetchAIReply(text);
+
+    // 2. OUTPUT GUARD (harness.js): Periksa balasan bot sebelum dicetak
+    const outputCheck = validateOutput(rawReply);
+    botBubble.textContent = outputCheck.sanitizedText;
   } catch (err) {
     botBubble.textContent = `Error: ${err.message}`;
   }
