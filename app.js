@@ -2,9 +2,6 @@ const messagesEl = document.getElementById('messages');
 const chatForm = document.getElementById('chat-form');
 const userInput = document.getElementById('user-input');
 
-// System Instruction (Guardrail): Larang konten CSS, PHP, dan JavaScript
-const SYSTEM_INSTRUCTION = "Kamu adalah asisten chat customer service. ATURAN KETAT: Kamu dilarang keras membahas, menulis, atau menjelaskan kode CSS, PHP, dan JavaScript. Jika pengguna bertanya tentang CSS, PHP, atau JavaScript, tolak dengan sopan dan jelaskan bahwa topik tersebut di luar batasan tugasmu.";
-
 // Fungsi 1: Pasang balon chat ke layar
 function appendMessage(text, sender) {
   const el = document.createElement('div');
@@ -12,12 +9,6 @@ function appendMessage(text, sender) {
   el.textContent = text;
   messagesEl.appendChild(el);
   messagesEl.scrollTop = messagesEl.scrollHeight;
-}
-
-// Filter Guardrail Sisi Klien (Mencegah sebelum request dikirim)
-function isDisallowed(text) {
-  const blockedTerms = ['css', 'php', 'javascript', 'js'];
-  return blockedTerms.some(term => new RegExp(`\\b${term}\\b`, 'i').test(text));
 }
 
 // Fungsi 2: Ambil balasan dari AI
@@ -30,7 +21,7 @@ async function fetchAIReply(userText) {
     },
     body: JSON.stringify({
       model: CONFIG.MODEL,
-      instructions: SYSTEM_INSTRUCTION,
+      instructions: HARNESS_SYSTEM_INSTRUCTION, // Dari harness.js
       input: userText
     })
   });
@@ -47,7 +38,7 @@ async function fetchAIReply(userText) {
   return textContent || data.output_text || 'Tidak ada balasan.';
 }
 
-// Fungsi 3: Jalankan saat tombol kirim ditekan
+// Fungsi 3: Jalankan saat form submit
 chatForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const text = userInput.value.trim();
@@ -56,9 +47,10 @@ chatForm.addEventListener('submit', async (e) => {
   appendMessage(text, 'user');
   userInput.value = '';
 
-  // Harness Lapisan 1: Filter lokal langsung tanpa buang token API
-  if (isDisallowed(text)) {
-    appendMessage('Maaf, topik terkait CSS, PHP, atau JavaScript tidak diizinkan di sistem ini.', 'bot');
+  // Validasi lewat harness
+  const check = validateInput(text);
+  if (!check.allowed) {
+    appendMessage(`[Ditolak]: ${check.reason}`, 'bot');
     return;
   }
 
